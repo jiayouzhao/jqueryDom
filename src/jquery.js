@@ -39,7 +39,7 @@ jQuery.fn = jQuery.prototype = {
 			});
 		
 		} else if (node.jquery) {
-			
+      
 			this.each((el) => {
 				node.element[0].appendChild(el);
 			});
