@@ -52,6 +52,120 @@ jQuery.fn = jQuery.prototype = {
 		}
 		return this;
 	},
+	css() {
+		
+		if (arguments.length === 1) {
+			if (typeof arguments[0] === "string") {
+				let string = "";
+				this.each(node => {
+					let a = window.getComputedStyle(node);
+					string += a.getPropertyValue(arguments[0]);
+				});
+				return string;
+			} else if (arguments[0] instanceof Array) {
+				let array = [];
+				this.each(node => {
+					let obj = {};
+					let a = window.getComputedStyle(node);
+					for (let i = 0; i < arguments[0].length; i++) {
+						obj[arguments[0][i]] = a.getPropertyValue(arguments[0][i]);
+					}
+					array.push(obj);
+				});
+				return array;
+			} else if (arguments[0] instanceof Object) {
+				this.each(node => {
+					for (let key in arguments[0]) {
+						node.style[key] = arguments[0][key];
+					}
+                    
+				});
+				return this;
+			}
+		} else if (arguments.length === 2) {
+			
+			if (typeof arguments[0] === "string" && typeof arguments[1] ===
+            "string") {
+				this.each(node => {
+					node.style[arguments[0]] = arguments[1];
+				});
+				return this;
+			}
+		}
+	},
+	on(name, fn) {
+		this.each(node => {
+			node.addEventListener(name, fn);
+		});
+		return this;
+	},
+	off(name, fn) {
+		this.each(node => {
+			node.removeEventListener(name, fn);
+		});
+		return this;
+	},
+	text() {
+        
+		let array = [];
+		if (!arguments[0]) {
+			this.each((node) => {
+				array.push(node.innerText);
+			});
+		} else {
+			this.each(node => {
+				node.innerText = arguments[0];
+				
+			});
+			return this;
+		}
+		return array;
+	},
+	attr() {
+		let string = "";
+		if (arguments.length === 1) {
+			this.each(node => {
+				string += node.getAttribute(arguments[0]);
+			});
+			return string; 
+		} else if (arguments.length === 2) {
+			this.each(node => {
+				node.setAttribute(arguments[0], arguments[1]);
+			});
+			return this;
+		}
+	},
+	html() {
+        
+		let array = [];
+		if (!arguments[0]) {
+			this.each((node) => {
+				array.push(node.innerHTML);
+			});
+		} else {
+			this.each(node => {
+				node.innerHTML = arguments[0];
+				
+			});
+			return this;
+		}
+		return array;
+	},
+	remove() {
+		let array = [];
+		this.each((node) => {
+			array.push(node);
+			node.remove();
+		});
+
+		return $(array);
+	},
+	empty() {
+		this.each((node) => {
+			node.innerHTML = "";
+		});
+		return this;
+	},
 	find(selector) {
 		let array = [];
 		for (let i = 0; i < this.element.length; i++) {
